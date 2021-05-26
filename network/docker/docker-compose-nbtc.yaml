@@ -1,0 +1,102 @@
+version: '2'
+
+volumes: 
+  orderer2.nbtc.example.com:
+  peer0.nbtc.example.com:
+  peer1.nbtc.example.com:
+
+networks: 
+  blood-donation:
+      external: 
+        name: blood-donation
+
+services: 
+
+  orderer2.nbtc.example.com:
+    extends: 
+      file: base/docker-compose-base-nbtc.yaml
+      service: orderer2.nbtc.example.com
+    container_name: orderer2.nbtc.example.com
+    networks: 
+      - blood-donation
+
+  nbtc.couchdb1:
+    container_name: nbtc.couchdb1
+    image: couchdb:3.1.1
+    environment: 
+      - COUCHDB_USER=nbtc
+      - COUCHDB_PASSWORD=adminpw
+    ports: 
+      - 5984:5984
+    networks: 
+      - blood-donation
+
+  peer0.nbtc.example.com:
+    extends: 
+      file: base/docker-compose-base-nbtc.yaml
+      service: peer0.nbtc.example.com
+    environment: 
+      - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=nbtc.couchdb1:5984
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=nbtc
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=adminpw
+    depends_on: 
+      - nbtc.couchdb1
+    networks: 
+      - blood-donation
+
+  nbtc.couchdb2:
+    container_name: nbtc.couchdb2
+    image: couchdb:3.1.1
+    environment: 
+      - COUCHDB_USER=nbtc
+      - COUCHDB_PASSWORD=adminpw
+    ports: 
+      - 6984:5984
+    networks: 
+      - blood-donation
+
+  peer1.nbtc.example.com:
+    extends: 
+      file: base/docker-compose-base-nbtc.yaml
+      service: peer1.nbtc.example.com
+    environment: 
+      - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=nbtc.couchdb2:5984
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=nbtc
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=adminpw
+    depends_on: 
+      - nbtc.couchdb2
+    networks: 
+      - blood-donation
+
+  cli:
+    container_name: cli_nbtc
+    image: hyperledger/fabric-tools:$IMAGE_TAG
+    tty: true
+    stdin_open: true 
+    environment: 
+      - SYS_CHANNEL=blood-donation-sys-channel
+      - GOPATH=/opt/gopath
+      - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+      - FABRIC_LOGGING_SPEC=INFO
+      - CORE_PEER_ID=cli_nbtc
+      - CORE_PEER_ADDRESS=peer0.nbtc.example.com:9051
+      - CORE_PEER_LOCALMSPID=NbtcMSP
+      - CORE_PEER_TLS_ENABLED=true
+      - CORE_PEER_TLS_CERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/nbtc.example.com/peers/peer0.nbtc.example.com/tls/server.crt
+      - CORE_PEER_TLS_KEY_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/nbtc.example.com/peers/peer0.nbtc.example.com/tls/server.key
+      - CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/nbtc.example.com/peers/peer0.nbtc.example.com/tls/ca.crt
+      - CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/nbtc.example.com/users/Admin@nbtc.example.com/msp
+    working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
+    command: /bin/bash
+    volumes: 
+        - /var/run/:/host/var/run/
+        - ../organizations:/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/
+        - ../channel-artifacts:/opt/gopath/src/github.com/hyperledger/fabric/peer/channel-artifacts
+    depends_on: 
+      - orderer2.nbtc.example.com
+      - peer0.nbtc.example.com
+      - peer1.nbtc.example.com
+    networks: 
+      - blood-donation

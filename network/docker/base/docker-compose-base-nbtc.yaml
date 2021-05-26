@@ -1,0 +1,63 @@
+version: '2'
+
+services: 
+
+  orderer2.nbtc.example.com:
+    environment: 
+      - ORDERER_GENERAL_LISTENPORT=9050
+      - ORDERER_GENERAL_LOCALMSPID=NbtcMSP
+    extends: 
+      file: peer-base.yaml
+      service: orderer-base
+    volumes: 
+      - ../../channel-artifacts/genesis.block:/var/hyperledger/orderer/orderer.genesis.block
+      - ../../organizations/peerOrganizations/nbtc.example.com/orderers/orderer2.nbtc.example.com/msp/:/var/hyperledger/orderer/msp
+      - ../../organizations/peerOrganizations/nbtc.example.com/orderers/orderer2.nbtc.example.com/tls/:/var/hyperledger/orderer/tls
+      - orderer2.nbtc.example.com:/var/hyperledger/production/orderer
+    ports: 
+      - 9050:9050
+      - 8443:8443
+
+  peer0.nbtc.example.com:
+    container_name: peer0.nbtc.example.com
+    extends: 
+      file: peer-base.yaml
+      service: peer-base
+    environment: 
+      - CORE_PEER_ID=peer0.nbtc.example.com
+      - CORE_PEER_ADDRESS=peer0.nbtc.example.com:9051
+      - CORE_PEER_LISTENADDRESS=0.0.0.0:9051
+      - CORE_PEER_CHAINCODEADDRESS=peer0.nbtc.example.com:9052
+      - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:9052
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer1.nbtc.example.com:10051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.nbtc.example.com:9051
+      - CORE_PEER_LOCALMSPID=NbtcMSP
+    volumes: 
+      - /var/run/:/host/var/run/
+      - ../../organizations/peerOrganizations/nbtc.example.com/peers/peer0.nbtc.example.com/msp:/etc/hyperledger/fabric/msp
+      - ../../organizations/peerOrganizations/nbtc.example.com/peers/peer0.nbtc.example.com/tls:/etc/hyperledger/fabric/tls
+      - peer0.nbtc.example.com:/var/hyperledger/production
+    ports: 
+      - 9051:9051
+
+  peer1.nbtc.example.com:
+    container_name: peer1.nbtc.example.com
+    extends: 
+      file: peer-base.yaml
+      service: peer-base
+    environment: 
+      - CORE_PEER_ID=peer1.nbtc.example.com
+      - CORE_PEER_ADDRESS=peer1.nbtc.example.com:10051
+      - CORE_PEER_LISTENADDRESS=0.0.0.0:10051
+      - CORE_PEER_CHAINCODEADDRESS=peer1.nbtc.example.com:10052
+      - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:10052
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.nbtc.example.com:9051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.nbtc.example.com:10051
+      - CORE_PEER_LOCALMSPID=NbtcMSP
+    volumes: 
+      - /var/run/:/host/var/run/
+      - ../../organizations/peerOrganizations/nbtc.example.com/peers/peer1.nbtc.example.com/msp:/etc/hyperledger/fabric/msp
+      - ../../organizations/peerOrganizations/nbtc.example.com/peers/peer1.nbtc.example.com/tls:/etc/hyperledger/fabric/tls
+      - peer1.nbtc.example.com:/var/hyperledger/production
+    ports: 
+      - 10051:10051
