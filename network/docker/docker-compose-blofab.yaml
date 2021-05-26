@@ -1,0 +1,112 @@
+version: '2'
+
+volumes: 
+  orderer0.blofab.example.com:
+  orderer1.blofab.example.com:
+  peer0.blofab.example.com:
+  peer1.blofab.example.com:
+
+networks: 
+  blood-donation:
+      external: 
+        name: blood-donation
+
+services: 
+
+  orderer0.blofab.example.com:
+    extends: 
+      file: base/docker-compose-base-blofab.yaml
+      service: orderer0.blofab.example.com
+    container_name: orderer0.blofab.example.com
+    networks: 
+      - blood-donation
+  
+  orderer1.blofab.example.com:
+    extends: 
+      file: base/docker-compose-base-blofab.yaml
+      service: orderer1.blofab.example.com
+    container_name: orderer1.blofab.example.com
+    networks: 
+      - blood-donation
+
+  blofab.couchdb1:
+    container_name: blofab.couchdb1
+    image: couchdb:3.1.1
+    environment: 
+      - COUCHDB_USER=blofab
+      - COUCHDB_PASSWORD=adminpw
+    ports: 
+      - 5984:5984
+    networks: 
+      - blood-donation
+
+  peer0.blofab.example.com:
+    extends: 
+      file: base/docker-compose-base-blofab.yaml
+      service: peer0.blofab.example.com
+    environment: 
+      - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=blofab.couchdb1:5984
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=blofab
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=adminpw
+    depends_on: 
+      - blofab.couchdb1
+    networks: 
+      - blood-donation
+
+  blofab.couchdb2:
+    container_name: blofab.couchdb2
+    image: couchdb:3.1.1
+    environment: 
+      - COUCHDB_USER=blofab
+      - COUCHDB_PASSWORD=adminpw
+    ports: 
+      - 6984:5984
+    networks: 
+      - blood-donation
+
+  peer1.blofab.example.com:
+    extends: 
+      file: base/docker-compose-base-blofab.yaml
+      service: peer1.blofab.example.com
+    environment: 
+      - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=blofab.couchdb2:5984
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=blofab
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=adminpw
+    depends_on: 
+      - blofab.couchdb2
+    networks: 
+      - blood-donation
+
+  cli:
+    container_name: cli_blofab
+    image: hyperledger/fabric-tools:$IMAGE_TAG
+    tty: true
+    stdin_open: true 
+    environment: 
+      - SYS_CHANNEL=blood-donation-sys-channel
+      - GOPATH=/opt/gopath
+      - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+      - FABRIC_LOGGING_SPEC=INFO
+      - CORE_PEER_ID=cli_blofab
+      - CORE_PEER_ADDRESS=peer0.blofab.example.com:7051
+      - CORE_PEER_LOCALMSPID=BlofabMSP
+      - CORE_PEER_TLS_ENABLED=true
+      - CORE_PEER_TLS_CERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/blofab.example.com/peers/peer0.blofab.example.com/tls/server.crt
+      - CORE_PEER_TLS_KEY_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/blofab.example.com/peers/peer0.blofab.example.com/tls/server.key
+      - CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/blofab.example.com/peers/peer0.blofab.example.com/tls/ca.crt
+      - CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/blofab.example.com/users/Admin@blofab.example.com/msp
+    working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
+    command: /bin/bash
+    volumes: 
+        - /var/run/:/host/var/run/
+        - ../organizations:/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/
+        - ../channel-artifacts:/opt/gopath/src/github.com/hyperledger/fabric/peer/channel-artifacts
+    depends_on: 
+      - orderer0.blofab.example.com
+      - orderer1.blofab.example.com
+      - peer0.blofab.example.com
+      - peer1.blofab.example.com
+    networks: 
+      - blood-donation

@@ -1,0 +1,79 @@
+version: '2'
+
+services: 
+
+  orderer0.blofab.example.com:
+    environment: 
+      - ORDERER_GENERAL_LISTENPORT=7050
+      - ORDERER_GENERAL_LOCALMSPID=BlofabMSP
+    extends: 
+      file: peer-base.yaml
+      service: orderer-base
+    volumes: 
+      - ../../channel-artifacts/genesis.block:/var/hyperledger/orderer/orderer.genesis.block
+      - ../../organizations/peerOrganizations/blofab.example.com/orderers/orderer0.blofab.example.com/msp/:/var/hyperledger/orderer/msp
+      - ../../organizations/peerOrganizations/blofab.example.com/orderers/orderer0.blofab.example.com/tls/:/var/hyperledger/orderer/tls
+      - orderer0.blofab.example.com:/var/hyperledger/production/orderer
+    ports: 
+      - 7050:7050
+      - 8443:8443
+
+  orderer1.blofab.example.com:
+    environment: 
+      - ORDERER_GENERAL_LISTENPORT=8050
+      - ORDERER_GENERAL_LOCALMSPID=BlofabMSP
+    extends: 
+      file: peer-base.yaml
+      service: orderer-base
+    volumes: 
+      - ../../channel-artifacts/genesis.block:/var/hyperledger/orderer/orderer.genesis.block
+      - ../../organizations/peerOrganizations/blofab.example.com/orderers/orderer1.blofab.example.com/msp/:/var/hyperledger/orderer/msp
+      - ../../organizations/peerOrganizations/blofab.example.com/orderers/orderer1.blofab.example.com/tls/:/var/hyperledger/orderer/tls
+      - orderer1.blofab.example.com:/var/hyperledger/production/orderer
+    ports: 
+      - 8050:8050
+      - 9443:9443
+
+  peer0.blofab.example.com:
+    container_name: peer0.blofab.example.com
+    extends: 
+      file: peer-base.yaml
+      service: peer-base
+    environment: 
+      - CORE_PEER_ID=peer0.blofab.example.com
+      - CORE_PEER_ADDRESS=peer0.blofab.example.com:7051
+      - CORE_PEER_LISTENADDRESS=0.0.0.0:7051
+      - CORE_PEER_CHAINCODEADDRESS=peer0.blofab.example.com:7052
+      - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:7052
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer1.blofab.example.com:8051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.blofab.example.com:7051
+      - CORE_PEER_LOCALMSPID=BlofabMSP
+    volumes: 
+      - /var/run/:/host/var/run/
+      - ../../organizations/peerOrganizations/blofab.example.com/peers/peer0.blofab.example.com/msp:/etc/hyperledger/fabric/msp
+      - ../../organizations/peerOrganizations/blofab.example.com/peers/peer0.blofab.example.com/tls:/etc/hyperledger/fabric/tls
+      - peer0.blofab.example.com:/var/hyperledger/production
+    ports: 
+      - 7051:7051
+
+  peer1.blofab.example.com:
+    container_name: peer1.blofab.example.com
+    extends: 
+      file: peer-base.yaml
+      service: peer-base
+    environment: 
+      - CORE_PEER_ID=peer1.blofab.example.com
+      - CORE_PEER_ADDRESS=peer1.blofab.example.com:8051
+      - CORE_PEER_LISTENADDRESS=0.0.0.0:8051
+      - CORE_PEER_CHAINCODEADDRESS=peer1.blofab.example.com:8052
+      - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:8052
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.blofab.example.com:7051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.blofab.example.com:8051
+      - CORE_PEER_LOCALMSPID=BlofabMSP
+    volumes: 
+      - /var/run/:/host/var/run/
+      - ../../organizations/peerOrganizations/blofab.example.com/peers/peer1.blofab.example.com/msp:/etc/hyperledger/fabric/msp
+      - ../../organizations/peerOrganizations/blofab.example.com/peers/peer1.blofab.example.com/tls:/etc/hyperledger/fabric/tls
+      - peer1.blofab.example.com:/var/hyperledger/production
+    ports: 
+      - 8051:8051
