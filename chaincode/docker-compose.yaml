@@ -1,0 +1,24 @@
+version: '2'
+
+networks: 
+  blood-donation:
+      external: 
+        name: blood-donation
+
+services: 
+  
+  chaincode-blofab.example.com:
+    hostname: chaincode.blofab.example.com
+    image: hyperledger/fabric-chaincode:$IMAGE_TAG
+    env_file:
+      - chaincode.env
+    environment:
+      - CHAINCODE_CCID=blofab_1:591c584d879907a0e998fcf63d8bdcf1903506a08d1f77bcace16ab40c72b111
+      - CHAINCODE_ADDRESS=0.0.0.0:7052
+    ports: 
+      - '7052:7052'
+    volumes:
+      - ../network/organizations/peerOrganizations/blofab.example.com/chaincode/chaincode.blofab.example.com/tls/:/tls
+    container_name: chaincode-blofab.example.com
+    networks: 
+      - blood-donation

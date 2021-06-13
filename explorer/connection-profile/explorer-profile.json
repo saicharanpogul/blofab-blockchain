@@ -1,0 +1,50 @@
+{
+  "name": "blood-donation",
+  "version": "1.0.0",
+  "client": {
+    "tlsEnable": true,
+    "adminCredential": {
+      "id": "exploreradmin",
+      "password": "exploreradminpw"
+    },
+    "enableAuthentication": true,
+    "organization": "BlofabMSP",
+    "connection": {
+      "timeout": {
+        "peer": {
+          "endorser": "300"
+        },
+        "orderer": "300"
+      }
+    }
+  },
+  "channels": {
+    "blood-donation-channel": {
+      "peers": {
+        "peer0.blofab.example.com": {}
+      }
+    }
+  },
+  "organizations": {
+    "BlofabMSP": {
+      "mspid": "BlofabMSP",
+      "adminPrivateKey": {
+        "path": "/tmp/crypto/peerOrganizations/blofab.example.com/users/Admin@blofab.example.com/msp/keystore/7c3eb7a4cbb304a411aa50984f59ae4c404724658554ffabfcbdacada2c21b97_sk"
+      },
+      "peers": [
+        "peer0.blofab.example.com"
+      ],
+      "signedCert": {
+        "path": "/tmp/crypto/peerOrganizations/blofab.example.com/users/Admin@blofab.example.com/msp/signcerts/cert.pem"
+      }
+    }
+  },
+  "peers": {
+    "peer0.blofab.example.com": {
+      "tlsCACerts": {
+        "path": "/tmp/crypto/peerOrganizations/blofab.example.com/peers/peer0.blofab.example.com/tls/ca.crt"
+      },
+      "url": "grpcs://peer0.blofab.example.com:7051"
+    }
+  }
+}

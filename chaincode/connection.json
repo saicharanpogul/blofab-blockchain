@@ -1,0 +1,9 @@
+{
+    "address": "chaincode.blofab.example.com:7052",
+    "dial_timeout": "60s",
+    "tls_required": true,
+    "client_auth_required": true,
+    "client_key": "CORE_PEER_TLS_KEY_FILE",
+    "client_cert": "CORE_PEER_TLS_CERT_FILE",
+    "root_cert": "CORE_PEER_TLS_ROOTCERT_FILE"
+}

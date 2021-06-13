@@ -43,8 +43,8 @@ services:
       - CORE_PEER_ID=peer0.blofab.example.com
       - CORE_PEER_ADDRESS=peer0.blofab.example.com:7051
       - CORE_PEER_LISTENADDRESS=0.0.0.0:7051
-      - CORE_PEER_CHAINCODEADDRESS=peer0.blofab.example.com:7052
-      - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:7052
+      # - CORE_PEER_CHAINCODEADDRESS=peer0.blofab.example.com:7052
+      # - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:7052
       - CORE_PEER_GOSSIP_BOOTSTRAP=peer1.blofab.example.com:8051
       - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.blofab.example.com:7051
       - CORE_PEER_LOCALMSPID=BlofabMSP
@@ -53,6 +53,9 @@ services:
       - ../../organizations/peerOrganizations/blofab.example.com/peers/peer0.blofab.example.com/msp:/etc/hyperledger/fabric/msp
       - ../../organizations/peerOrganizations/blofab.example.com/peers/peer0.blofab.example.com/tls:/etc/hyperledger/fabric/tls
       - peer0.blofab.example.com:/var/hyperledger/production
+      # external builder 
+      - ../../../chaincode:/opt/gopath/src/github.com/hyperledger/external-builder
+      - ../../../config/core.yaml:/etc/hyperledger/fabric/core.yaml
     ports: 
       - 7051:7051
 
@@ -65,8 +68,8 @@ services:
       - CORE_PEER_ID=peer1.blofab.example.com
       - CORE_PEER_ADDRESS=peer1.blofab.example.com:8051
       - CORE_PEER_LISTENADDRESS=0.0.0.0:8051
-      - CORE_PEER_CHAINCODEADDRESS=peer1.blofab.example.com:8052
-      - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:8052
+      # - CORE_PEER_CHAINCODEADDRESS=peer1.blofab.example.com:8052
+      # - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:8052
       - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.blofab.example.com:7051
       - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.blofab.example.com:8051
       - CORE_PEER_LOCALMSPID=BlofabMSP
@@ -75,5 +78,8 @@ services:
       - ../../organizations/peerOrganizations/blofab.example.com/peers/peer1.blofab.example.com/msp:/etc/hyperledger/fabric/msp
       - ../../organizations/peerOrganizations/blofab.example.com/peers/peer1.blofab.example.com/tls:/etc/hyperledger/fabric/tls
       - peer1.blofab.example.com:/var/hyperledger/production
+      # external builder 
+      - ../../../chaincode:/opt/gopath/src/github.com/hyperledger/external-builder
+      - ../../../config/core.yaml:/etc/hyperledger/fabric/core.yaml
     ports: 
       - 8051:8051
