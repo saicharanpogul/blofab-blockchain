@@ -1,0 +1,24 @@
+version: '2'
+
+networks: 
+  blood-donation:
+      external: 
+        name: blood-donation
+
+services: 
+  
+  chaincode-nbtc.example.com:
+    hostname: chaincode.nbtc.example.com
+    image: hyperledger/fabric-chaincode:$IMAGE_TAG
+    env_file:
+      - chaincode.env
+    environment:
+      - CHAINCODE_CCID=blofab_1:c737cbbab98176abd4f16ed7b8f76b9672a0170cbb0e9e2a23bc5b7afe5b16d4
+      - CHAINCODE_ADDRESS=0.0.0.0:9052
+    ports: 
+      - '9052:9052'
+    volumes:
+      - ../network/organizations/peerOrganizations/nbtc.example.com/chaincode/chaincode.nbtc.example.com/tls/:/tls
+    container_name: chaincode-nbtc.example.com
+    networks: 
+      - blood-donation

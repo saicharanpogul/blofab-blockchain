@@ -551,10 +551,13 @@ chaincode:
     # List of directories to treat as external builders and launchers for
     # chaincode. The external builder detection processing will iterate over the
     # builders in the order specified below.
-    externalBuilders: []
-        # - path: /path/to/directory
-        #   name: descriptive-builder-name
-        #   propagateEnvironment:
+    externalBuilders: 
+        - path: /opt/gopath/src/github.com/hyperledger/external-builder
+          name: chaincode-external-builder
+          propagateEnvironment:
+             - CORE_PEER_TLS_ROOTCERT_FILE
+             - CORE_PEER_TLS_CERT_FILE
+             - CORE_PEER_TLS_KEY_FILE
         #      - ENVVAR_NAME_TO_PROPAGATE_FROM_PEER
         #      - GOPROXY
 

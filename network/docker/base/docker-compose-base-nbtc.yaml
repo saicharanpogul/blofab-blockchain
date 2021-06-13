@@ -27,8 +27,8 @@ services:
       - CORE_PEER_ID=peer0.nbtc.example.com
       - CORE_PEER_ADDRESS=peer0.nbtc.example.com:9051
       - CORE_PEER_LISTENADDRESS=0.0.0.0:9051
-      - CORE_PEER_CHAINCODEADDRESS=peer0.nbtc.example.com:9052
-      - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:9052
+      # - CORE_PEER_CHAINCODEADDRESS=peer0.nbtc.example.com:9052
+      # - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:9052
       - CORE_PEER_GOSSIP_BOOTSTRAP=peer1.nbtc.example.com:10051
       - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.nbtc.example.com:9051
       - CORE_PEER_LOCALMSPID=NbtcMSP
@@ -37,6 +37,9 @@ services:
       - ../../organizations/peerOrganizations/nbtc.example.com/peers/peer0.nbtc.example.com/msp:/etc/hyperledger/fabric/msp
       - ../../organizations/peerOrganizations/nbtc.example.com/peers/peer0.nbtc.example.com/tls:/etc/hyperledger/fabric/tls
       - peer0.nbtc.example.com:/var/hyperledger/production
+      # external builder 
+      - ../../../chaincode:/opt/gopath/src/github.com/hyperledger/external-builder
+      - ../../../config/core.yaml:/etc/hyperledger/fabric/core.yaml
     ports: 
       - 9051:9051
 
@@ -49,8 +52,8 @@ services:
       - CORE_PEER_ID=peer1.nbtc.example.com
       - CORE_PEER_ADDRESS=peer1.nbtc.example.com:10051
       - CORE_PEER_LISTENADDRESS=0.0.0.0:10051
-      - CORE_PEER_CHAINCODEADDRESS=peer1.nbtc.example.com:10052
-      - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:10052
+      # - CORE_PEER_CHAINCODEADDRESS=peer1.nbtc.example.com:10052
+      # - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:10052
       - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.nbtc.example.com:9051
       - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.nbtc.example.com:10051
       - CORE_PEER_LOCALMSPID=NbtcMSP
@@ -59,5 +62,8 @@ services:
       - ../../organizations/peerOrganizations/nbtc.example.com/peers/peer1.nbtc.example.com/msp:/etc/hyperledger/fabric/msp
       - ../../organizations/peerOrganizations/nbtc.example.com/peers/peer1.nbtc.example.com/tls:/etc/hyperledger/fabric/tls
       - peer1.nbtc.example.com:/var/hyperledger/production
+      # external builder 
+      - ../../../chaincode:/opt/gopath/src/github.com/hyperledger/external-builder
+      - ../../../config/core.yaml:/etc/hyperledger/fabric/core.yaml
     ports: 
       - 10051:10051

@@ -20,8 +20,8 @@ services:
       - CORE_PEER_ID=peer0.$ORG_NAME.$DOMAIN_NAME.com
       - CORE_PEER_ADDRESS=peer0.$ORG_NAME.$DOMAIN_NAME.com:$PEER0_PORT
       - CORE_PEER_LISTENADDRESS=0.0.0.0:$PEER0_PORT
-      - CORE_PEER_CHAINCODEADDRESS=peer0.$ORG_NAME.$DOMAIN_NAME.com:$PEER0_CHAINCODE_PORT
-      - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:$PEER0_CHAINCODE_PORT
+      #- CORE_PEER_CHAINCODEADDRESS=peer0.$ORG_NAME.$DOMAIN_NAME.com:$PEER0_CHAINCODE_PORT
+      #- CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:$PEER0_CHAINCODE_PORT
       - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.$ORG_NAME.$DOMAIN_NAME.com:$PEER0_PORT
       - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.$ORG_NAME.$DOMAIN_NAME.com:$PEER0_PORT
       - CORE_PEER_LOCALMSPID=$ORG_MSP
@@ -30,6 +30,9 @@ services:
       - ../../organizations/peerOrganizations/$ORG_NAME.$DOMAIN_NAME.com/peers/peer0.$ORG_NAME.$DOMAIN_NAME.com/msp:/etc/hyperledger/fabric/msp
       - ../../organizations/peerOrganizations/$ORG_NAME.$DOMAIN_NAME.com/peers/peer0.$ORG_NAME.$DOMAIN_NAME.com/tls:/etc/hyperledger/fabric/tls
       - peer0.$ORG_NAME.$DOMAIN_NAME.com:/var/hyperledger/production
+      # external builder 
+      - ../../../chaincode:/opt/gopath/src/github.com/hyperledger/external-builder
+      - ../../../config/core.yaml:/etc/hyperledger/fabric/core.yaml
     ports: 
       - $PEER0_PORT:$PEER0_PORT" > docker-compose-base-$ORG_NAME.yaml
 
