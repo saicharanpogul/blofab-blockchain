@@ -1,0 +1,60 @@
+{
+  "name": "supplychain",
+  "version": "1.0.0",
+  "client": {
+    "organization": "Blofab",
+    "connection": {
+      "timeout": {
+        "peer": {
+          "endorser": "300"
+        }
+      }
+    }
+  },
+  "organizations": {
+    "Blofab": {
+      "mspid": "BlofabMSP",
+      "peers": [
+        "peer0.blofab.example.com",
+        "peer1.blofab.example.com"
+      ],
+      "certificateAuthorities": [
+        "ca.blofab.example.com"
+      ]
+    }
+  },
+  "peers": {
+    "peer0.blofab.example.com": {
+      "url": "grpcs://peer0.blofab.example.com:7051",
+      "grpcOption": {
+        "ssl-target-name-override": "peer0.blofab.example.com",
+        "hostnameOverride": "peer0.blofab.example.com"
+      },
+      "tlsCACerts": {
+        "path": "/usr/src/app/crypto/blofab.example.com/tlsca/tlsca.blofab.example.com-cert.pem"
+      }
+    },
+    "peer1.blofab.example.com": {
+      "url": "grpcs://peer1.blofab.example.com:8051",
+      "grpcOption": {
+        "ssl-target-name-override": "peer1.blofab.example.com",
+        "hostnameOverride": "peer1.blofab.example.com"
+      },
+      "tlsCACerts": {
+        "path": "/usr/src/app/crypto/blofab.example.com/tlsca/tlsca.blofab.example.com-cert.pem"
+      }
+    }
+  },
+  "certificateAuthorities": {
+    "ca.blofab.example.com": {
+      "url": "https://ca_blofab:7054",
+      "caName": "ca.blofab.example.com",
+      "httpOptions": {
+        "verify": false
+      },
+      "tlsCACerts": {
+        "path": "/usr/src/app/crypto/blofab.example.com/ca/ca.blofab.example.com-cert.pem"
+      }
+    }
+  }
+}

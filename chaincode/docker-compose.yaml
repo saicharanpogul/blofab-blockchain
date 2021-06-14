@@ -13,7 +13,7 @@ services:
     env_file:
       - chaincode.env
     environment:
-      - CHAINCODE_CCID=blofab_1:591c584d879907a0e998fcf63d8bdcf1903506a08d1f77bcace16ab40c72b111
+      - CHAINCODE_CCID=blofab_1:6bd1902d464cb5939cb85e01398fa4f0af2fee24173d466784ee10236be083e2
       - CHAINCODE_ADDRESS=0.0.0.0:7052
     ports: 
       - '7052:7052'

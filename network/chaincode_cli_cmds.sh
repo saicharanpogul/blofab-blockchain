@@ -58,6 +58,6 @@ initChaincode () {
   echo
 }
 
-# checkCommitReadiness 
-# commitChaincode
+checkCommitReadiness 
+commitChaincode
 initChaincode

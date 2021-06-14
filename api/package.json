@@ -1,0 +1,22 @@
+{
+  "name": "api",
+  "version": "1.0.0",
+  "description": "Blofab's fabric client APIs.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "Saicharan Pogul",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "fabric-ca-client": "^2.2.6",
+    "fabric-client": "^1.4.18",
+    "fabric-common": "^2.2.6",
+    "fabric-network": "^2.2.6",
+    "morgan": "^1.10.0"
+  }
+}

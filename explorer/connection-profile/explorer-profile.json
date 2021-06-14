@@ -29,7 +29,7 @@
     "BlofabMSP": {
       "mspid": "BlofabMSP",
       "adminPrivateKey": {
-        "path": "/tmp/crypto/peerOrganizations/blofab.example.com/users/Admin@blofab.example.com/msp/keystore/7c3eb7a4cbb304a411aa50984f59ae4c404724658554ffabfcbdacada2c21b97_sk"
+        "path": "/tmp/crypto/peerOrganizations/blofab.example.com/users/Admin@blofab.example.com/msp/keystore/d70921a0d5c5a10bfc717aa9889657f9a05ce6a2dc4703e68a1fb2fbfdc175f3_sk"
       },
       "peers": [
         "peer0.blofab.example.com"

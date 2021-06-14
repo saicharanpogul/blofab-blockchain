@@ -1,0 +1,18 @@
+version: "2.1"
+
+networks:
+  blood-donation:
+    external:
+      name: blood-donation
+
+services:
+  api:
+    image: api:1.0
+    build:
+      context: .
+    volumes:
+      - ../network/organizations/peerOrganizations/blofab.example.com:/usr/src/app/crypto/blofab.example.com
+    networks:
+      - blood-donation
+    ports:
+      - 7080:7080
