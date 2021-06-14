@@ -1,2 +1,2 @@
 Installed chaincodes on peer:
-Package ID: blofab_1:c737cbbab98176abd4f16ed7b8f76b9672a0170cbb0e9e2a23bc5b7afe5b16d4, Label: blofab_1
+Package ID: blofab_1:a7b88566cdf43ed36e8b48e85ae220f2b2a527d972f21814020eb7330be971c5, Label: blofab_1

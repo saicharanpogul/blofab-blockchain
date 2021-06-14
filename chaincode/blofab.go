@@ -66,11 +66,11 @@ func (s *SmartContract) GetBloodCounts(ctx contractapi.TransactionContextInterfa
 	bloodSamplesBytes, err := ctx.GetStub().GetState(bloodBankId)
 
 	if err != nil {
-		return nil, fmt.Errorf("Failed to read from the world state, %s.", err.Error())
+		return nil, fmt.Errorf("failed to read from the world state, %s", err.Error())
 	}
 
 	if bloodSamplesBytes == nil {
-		return nil, fmt.Errorf("%s does not exist.", bloodBankId)
+		return nil, fmt.Errorf("%s does not exist", bloodBankId)
 	}
 
 	bloodSamples := new(BloodSamples)
@@ -110,12 +110,12 @@ func (s *SmartContract) DecrementBloodCount(ctx contractapi.TransactionContextIn
 	return bloodSamples, ctx.GetStub().PutState(bloodBankId, bloodSamplesBytes)
 }
 
-// GetBloodCountHistrory is used to get complete history of blood counter
-func (s *SmartContract) GetBloodCountHistrory(ctx contractapi.TransactionContextInterface, bloodBankId string) ([]BloodSamples, error) {
+// GetBloodCountHistory is used to get complete history of blood counter
+func (s *SmartContract) GetBloodCountHistory(ctx contractapi.TransactionContextInterface, bloodBankId string) ([]BloodSamples, error) {
 	historyIterator, err := ctx.GetStub().GetHistoryForKey(bloodBankId)
 
 	if err != nil {
-		return nil, fmt.Errorf("History not found for %s.", err.Error())
+		return nil, fmt.Errorf("history not found for %s", err.Error())
 	}
 
 	defer historyIterator.Close()
