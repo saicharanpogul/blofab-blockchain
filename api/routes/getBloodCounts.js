@@ -7,7 +7,7 @@ const path = require('path')
 const fs = require('fs')
 
 // Increment Blood Count by blood type
-router.get('/', async (req, res, next) => {
+router.post('/', async (req, res, next) => {
   try {
     const username = req.body.username
     // Load the network configuration.
